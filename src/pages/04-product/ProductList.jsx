@@ -82,19 +82,20 @@ function ProductList() {
 
   return (
     <div className='product-list'>
-      {/* 페이지 상단 타이틀 */}
-      <h2 className='all-menu-title'>
-        {ctgrItem.cat_name ? ctgrItem.cat_name : ctgrItem}
-      </h2>
-
-      {/* 총 상품 개수 */}
-      <p className='product-list-num'><span>{listItem.length}</span>개</p>
-
       {/* 데이터가 있을 경우 */}
-      { !notFound ? (
-        <div className='product-list-item-box'>
-          {
-            items.map(product => (
+      {(!notFound && listItem.length > 0) ? (
+        <>
+          {/* 페이지 상단 타이틀 */}
+          <h2 className='all-menu-title'>
+            {ctgrItem.cat_name ? ctgrItem.cat_name : ctgrItem}
+          </h2>
+          
+          {/* 총 상품 개수 */}
+          <p className='product-list-num'><span>{listItem.length}</span>개</p>
+
+          {/* 상품 리스트 */}
+          <div className='product-list-item-box'>
+            {items.map(product => 
               product.isPlaceholder ? (
                 // 홀수 맞춤용 빈 박스
                 <div key='placeholder' className='carditem placeholder'></div>
@@ -110,11 +111,11 @@ function ProductList() {
                   />
                 </div>
               )
-            ))
-          }
-        </div>
+            )}
+          </div>
+        </>
       ) : (
-        // 데이터가 없을 경우 안내 메시지
+        // 카테고리 or 데이터가 없을 경우 안내 메시지
         <InfoMessage type={'noproduct'} />
       )}
 
