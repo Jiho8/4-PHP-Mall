@@ -202,8 +202,8 @@ https://ripo-tau.vercel.app
 - [홈](https://ripo-tau.vercel.app/)
 - [검색](https://ripo-tau.vercel.app/search)
 - [카테고리](https://ripo-tau.vercel.app/category)
-- [상품 리스트 페이지](https://ripo-tau.vercel.app/product/[type]) *(type 필수. 홈이나 카테고리 페이지를 통해 접근 가능.)*
-- [상품 디테일 페이지](https://ripo-tau.vercel.app/product/[type]/[id]) *(type, id 필수)*
+- [상품 리스트 페이지] /product/[type] *(type 필수. 홈이나 카테고리 페이지를 통해 접근 가능.)*
+- [상품 디테일 페이지] /product/[type]/[id] *(type, id 필수)*
 
 ## 🧩 공통 컴포넌트
 
