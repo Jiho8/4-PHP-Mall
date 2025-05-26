@@ -56,8 +56,8 @@ https://ripo-tau.vercel.app
 
 | 이름 | 주요 페이지 컴포넌트 | 해당 |
 | :---:| :---: | :---: |
-| 천지호 | Home.jsx, 검색(search 폴더), 카테고리(category 폴더), 상품 정보(product 폴더), Faq.jsx |  |
-| 소연희 | Splash.jsx, 장바구니(cart 폴더), 결제(pay 폴더), 마이페이지(mypage 폴더), 로그인 및 회원가입(login 폴더) | ✔ |
+| 소연희 | Splash.jsx, 장바구니(cart 폴더), 결제(pay 폴더), 마이페이지(mypage 폴더), 로그인 및 회원가입(login 폴더) |  |
+| 천지호 | Home.jsx, 검색(search 폴더), 카테고리(category 폴더), 상품 정보(product 폴더), Faq.jsx | ✔ |
 
 ## 💡 주요 기능
 
@@ -175,7 +175,7 @@ https://ripo-tau.vercel.app
 | **Figma** | **디자인 & UI/UX**|![Figma](https://img.shields.io/badge/Figma-F24E1E?style=flat-square&logo=Figma&logoColor=white) |
 
 
-# 소연희의 개발 상세
+# 천지호 개발 상세
 
 ## 📑 요약
 * 담당
