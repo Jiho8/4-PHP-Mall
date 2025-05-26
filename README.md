@@ -175,24 +175,53 @@ https://ripo-tau.vercel.app
 | **Figma** | **디자인 & UI/UX**|![Figma](https://img.shields.io/badge/Figma-F24E1E?style=flat-square&logo=Figma&logoColor=white) |
 
 
-# 천지호 개발 상세
+<hr>
+
+# 천지호의 개발 상세
 
 ## 📑 요약
-* 담당
-  * 담당 내용 작성
-* 담당 컴포넌트 상세
-  * Home.jsx - 내용 작성
- 
-## 🧩 공통 컴포넌트 제작
-* 📜Menu.jsx - 모든 페이지 하단에 고정된 메뉴바 컴포넌트
 
-  
-## 💥 트러블 슈팅
+### 담당 컴포넌트
+- CardItem.jsx: 상품 데이터 카드 형태로 출력 시 사용되는 컴포넌트
+- CardList.jsx: 카드 형태로 출력한 아이템 리스트
+- MenuBar.jsx: 하단에 고정하여 사용하는 메뉴 바
+- Header.jsx: 로고, 버튼 등이 포함된 헤더
+- Accordion.jsx: FAQ, 공지사항 페이지에서 사용되는 아코디언 형태의 아이템
 
-### 📌 Home.jsx
+### 담당 페이지 목록
+- [홈](https://ripo-tau.vercel.app/)
+- [검색](https://ripo-tau.vercel.app/search)
+- [카테고리](https://ripo-tau.vercel.app/category)
+- [상품 리스트 페이지](https://ripo-tau.vercel.app/product/type) *(type 필요)*
+- [상품 디테일 페이지](https://ripo-tau.vercel.app/product/type/id) *(type, id 필요)*
 
- 1. 문제점
-  
-    *어떤 상황
-       
-    ⇒ **해결방법**: 이슈 처리<br>
+## 🧩 공통 컴포넌트
+
+1. **Card** (CardItem.jsx, CardList.jsx)  
+   - 로그인, 로그아웃, 삭제 등 사용자 안내용 팝업  
+   - 전달받은 타입에 따라 내용 표시 및 'onConfirm'으로 버튼 동작 관리
+
+2. **Tab** (TabItem.jsx, TabMenu.jsx, TabPage.jsx)
+   - TabMenu: 탭 선택 상태 표시 및 선택된 탭 인덱스 상위로 전달
+   - TabPage: 타입별 탭 제목 및 메인 타이틀 설정  
+
+3. **List** (ListItem.jsx, ListPage.jsx)  
+   - ListPage: 데이터를 연도별 그룹화 및 최신순 정렬, 삭제 팝업 관리
+
+## 💥 이슈 및 해결
+
+### 1. Splash.jsx 렌더링 순서 문제  
+- 메인 페이지가 먼저 보이고 Splash가 나중에 나타나는 현상  
+- **해결**: App.js 렌더링 전에 조건문 추가, 최초 접속 시 Splash로 이동하고 방문 기록 저장, `replace` 사용해 히스토리 남기지 않음
+
+### 2. Login.jsx
+1. 카카오 토큰 요청 시 잘못된 파라미터 사용으로 인한 로그인 도중 400, 401 에러  
+   ⇒ **해결방법**: 파라미터 이름은 개인이 설정하는 것이 아닌 카카오가 요구하는 key 이름 그대로 사용해야 하므로 수정(예: grant_type, client_id 등).
+
+2. 소셜 로그인 정보를 저장하는 ‘provider’값이 제대로 저장되지 않아 로그아웃 방식에 혼란  
+   ⇒ **해결방법**: 세션에 저장하는 코드를 KakaoLogin.jsx와 같은 인가 코드 요청 컴포넌트에 작성하여 위 컴포넌트들이 랜더링 될 때마다 실행. 하지만 실제 로그인이 이루어지는 건 버튼 클릭 후 페이지가 redirect 페이지로 바뀐 이후이기 때문에 이 코드는 로그인 시도 전에만 실행되고, 리다이렉트 되면 새로고침처럼 작동하여 세션이 초기화된 상태로 다시 시작되어 provider가 저장되지 않은 채 로그인. 따라서 로그인이 완료된 시점인 리다이렉트 페이지에서 사용자 정보를 저장할 때 provider를 함께 저장하는 방식으로 변경.
+
+### 3. Logout.jsx - 로그아웃 팝업 및 이동 문제  
+- 로그아웃 함수 비동기 처리로 팝업 및 페이지 이동 흐름 문제  
+- **해결**: 팝업 띄우는 코드를 로그아웃 함수 내부 콜백으로 이동
+
