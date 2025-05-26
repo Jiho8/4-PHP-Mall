@@ -55,7 +55,7 @@ https://ripo-tau.vercel.app
 ## 👩🏻‍🤝‍🧑🏻 팀원 소개
 
 | 이름 | 주요 페이지 컴포넌트 | 해당 |
-| :---:| :---: | :---: |
+| :---: | :---: | :---: |
 | 소연희 | Splash.jsx, 장바구니(cart 폴더), 결제(pay 폴더), 마이페이지(mypage 폴더), 로그인 및 회원가입(login 폴더) |  |
 | 천지호 | Home.jsx, 검색(search 폴더), 카테고리(category 폴더), 상품 정보(product 폴더), Faq.jsx | ✔ |
 
