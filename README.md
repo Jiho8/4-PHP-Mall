@@ -182,37 +182,49 @@ https://ripo-tau.vercel.app
 ## 📑 요약
 
 ### 담당 컴포넌트
-- CardItem.jsx: 상품 데이터 카드 형태로 출력 시 사용되는 컴포넌트
-- CardList.jsx: 카드 형태로 출력한 아이템 리스트
-- MenuBar.jsx: 하단에 고정하여 사용하는 메뉴 바
-- Header.jsx: 로고, 버튼 등이 포함된 헤더
-- Accordion.jsx: FAQ, 공지사항 페이지에서 사용되는 아코디언 형태의 아이템
+- Home
+  - CategoryLink.jsx: 소카테고리 바로가기 메뉴
+  - HomeSlide.jsx: 랜덤으로 4개의 상품을 보여줄 메인 슬라이드 (하루 지나면 리셋)
+- Search
+  - SearchBar.jsx: 검색창
+  - SearchKeyword.jsx: 추천 키워드
+- Category
+  - CategorySub.jsx: 중카테고리
+- Product
+  - BottomBar.jsx: 상세 페이지에 사용되는 하단 구매 바
+  - BottomBarExpanded.jsx: 클릭을 통해 확장된 하단 구매 바 (수량 조절 및 버튼 포함)
+  - Detailcontent.jsx: 상세 내용 렌더링을 위한 별도 컴포넌트
+  - ProductSlide.jsx: 상품 썸네일 이미지 슬라이드
+  - SnackBar.jsx: 장바구니 알림을 위한 스낵바
+  - TabMenu.jsx: 상세 페이지에 사용되는 탭메뉴 (상세 내용 / 문의)
 
 ### 담당 페이지 목록
 - [홈](https://ripo-tau.vercel.app/)
 - [검색](https://ripo-tau.vercel.app/search)
 - [카테고리](https://ripo-tau.vercel.app/category)
-- [상품 리스트 페이지](https://ripo-tau.vercel.app/product/type) *(type 필요)*
-- [상품 디테일 페이지](https://ripo-tau.vercel.app/product/type/id) *(type, id 필요)*
+- [상품 리스트 페이지](/product/[type]) *(type 필수. 홈이나 카테고리 페이지를 통해 접근 가능.)*
+- [상품 디테일 페이지](/product/[type]/[id]) *(type, id 필수)*
 
 ## 🧩 공통 컴포넌트
 
-1. **Card** (CardItem.jsx, CardList.jsx)  
-   - 로그인, 로그아웃, 삭제 등 사용자 안내용 팝업  
-   - 전달받은 타입에 따라 내용 표시 및 'onConfirm'으로 버튼 동작 관리
+1. Card (CardItem.jsx, CardList.jsx)
+   - 상품 정보를 카드 형태로 보여주는 컴포넌트들
+   - CardItem: 개별 상품 카드
+   - CardList: 카드 아이템 리스트 렌더링
 
-2. **Tab** (TabItem.jsx, TabMenu.jsx, TabPage.jsx)
-   - TabMenu: 탭 선택 상태 표시 및 선택된 탭 인덱스 상위로 전달
-   - TabPage: 타입별 탭 제목 및 메인 타이틀 설정  
-
-3. **List** (ListItem.jsx, ListPage.jsx)  
-   - ListPage: 데이터를 연도별 그룹화 및 최신순 정렬, 삭제 팝업 관리
+2. Layout (MenuBar.jsx, Header.jsx)
+   - 앱 전반에 걸쳐 고정 사용되는 레이아웃 컴포넌트
+   - MenuBar: 하단 고정 메뉴 바
+   - Header: 상단 로고 및 버튼 포함 헤더
+     
+3. Accordion (Accordion.jsx)
+   - FAQ, 공지사항 등에 쓰이는 아코디언 UI 컴포넌트
 
 ## 💥 이슈 및 해결
 
-### 1. Splash.jsx 렌더링 순서 문제  
-- 메인 페이지가 먼저 보이고 Splash가 나중에 나타나는 현상  
-- **해결**: App.js 렌더링 전에 조건문 추가, 최초 접속 시 Splash로 이동하고 방문 기록 저장, `replace` 사용해 히스토리 남기지 않음
+### 1. ProductDetail.jsx
+- 상품 상세 페이지에서 하단 구매 바 애니메이션 동작 중 상세 내용이 재렌더링 되어 스크롤 이동 되고 깜빡이는 현상
+- **해결**: 상세 내용 부분을 별도의 컴포넌트로 분리하여 한 번만 렌더링 될 수 있도록 변경.
 
 ### 2. Login.jsx
 1. 카카오 토큰 요청 시 잘못된 파라미터 사용으로 인한 로그인 도중 400, 401 에러  
