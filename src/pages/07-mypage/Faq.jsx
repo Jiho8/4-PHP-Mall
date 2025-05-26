@@ -3,8 +3,9 @@ import Accordion from '../../component/_common/Accordion'
 import '../../styles/07-mypage/faq.scss';
 
 function Faq() {
-  const [openIndex, setOpenIndex] = useState(null);
+  const [openIndex, setOpenIndex] = useState(null);     // 토글된 인덱스 관리
   
+  // 데이터 (title, 내용)
   const faqData = [
     {
       title: '상품을 주문 하려면 어떻게 하나요?',

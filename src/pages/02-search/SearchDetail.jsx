@@ -11,13 +11,13 @@ import '../../styles/02-search/searchDetail.scss';
 
 function SearchDetail() {
   const navi = useNavigate();
-  const { word } = useParams();
+  const { word } = useParams();  // 검색어
   
-  const [loading, setLoading] = useState(true); // 데이터 로딩
-  const [tempInput, setTempInput] = useState(''); //검색어 입력중
-  const [searchInput, setSearchInput] = useState(''); //검색한 단어 저장
+  const [loading, setLoading] = useState(true);         // 데이터 로딩 상태 관리
+  const [tempInput, setTempInput] = useState('');       // 검색어 입력중
+  const [searchInput, setSearchInput] = useState('');   // 검색한 단어 저장
   const [searchResult, setSearchResult] = useState([]); // 검색한 단어에 대한 데이터 저장
-  const [ctgrName, setCtgrName] = useState([]); // 각 데이터들의 카테고리명
+  const [ctgrName, setCtgrName] = useState([]);         // 각 데이터들의 카테고리명
 
   // 모든 상품 데이터 가져오기
   useEffect(()=>{
@@ -32,7 +32,7 @@ function SearchDetail() {
     })
   },[word])
 
-  // 모든 카테고리 가져와 홈에 표시되는 데이터의 카테고리 id값과 일치하는 카테고리의 name 가져오기
+  // 카테고리 데이터 불러오기 (id → name 매핑)
   useEffect(()=>{
     if (searchResult === null) return;
 
@@ -68,8 +68,8 @@ function SearchDetail() {
   
   return (
     <div className='search-detail'>
+      {/* 검색창 */}
       <div className='search-detail-bar'>
-        {/* <BackIcon className={'bar-backicon'} onClick={() => navi(-1)}/> */}
         <SearchBar 
           placeholder={"어떤 상품을 찾아볼까?"} submitbtn={<SearchIconPurple className={'search-btn'}/>}
           value={tempInput} onChange={(e)=>setTempInput(e.target.value)}
@@ -81,6 +81,7 @@ function SearchDetail() {
         <span onClick={() => navi('/search')}>취소</span>
       </div>
 
+      {/* 입력한 검색어 및 검색 결과수 표시 */}
       {items.length === 0 ? (
         <InfoMessage type={'nosearch'}/>
       ) : (
@@ -89,6 +90,7 @@ function SearchDetail() {
         </p>
       )}
 
+      {/* 검색 결과 리스트 */}
       <div className='product-list-item-box'>
         {
           items.map((item, i) => (
@@ -109,6 +111,7 @@ function SearchDetail() {
         }
       </div>
 
+      {/* 탑버튼 */}
       <TopIcon className={'search-detail-topicon'}/>
     </div>
   )

@@ -1,6 +1,7 @@
 import React from 'react'
 
 function TopIcon({className}) {
+  // 스크롤 관리
   const upScroll = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };

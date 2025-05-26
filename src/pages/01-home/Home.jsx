@@ -11,14 +11,14 @@ import 'swiper/css/pagination';
 import '../../styles/01-home/home.scss'
 
 function Home() {
-  const [loading, setLoading] = useState(true); // 데이터 로딩
-  const [allItem, setAllItem] = useState([]);
-  const [mainctgrName, setMainCtgrName] = useState([]);
-  const [newCtgrName, setNewCtgrName] = useState([]);
-  const [mainSlideItem, setMainSlideItem] = useState(null);
+  const [loading, setLoading] = useState(true);              // 데이터 로딩 상태 관리
+  const [allItem, setAllItem] = useState([]);                // 전체 상품 데이터
+  const [mainctgrName, setMainCtgrName] = useState([]);      // 메인 슬라이드 데이터들의 카테고리명
+  const [newCtgrName, setNewCtgrName] = useState([]);        // 새로 나온 상품 데이터들의 카테고리명
+  const [mainSlideItem, setMainSlideItem] = useState(null);  // 메인 슬라이드 데이터
+  const [newSlideItem, setNewSlideItem] = useState(null);    // 새로 나온 상품 데이터
 
-  const [newSlideItem, setNewSlideItem] = useState([]);
-
+  // 소카테고리 바로가기 아이콘 이미지 및 메뉴명
   const category = [
     {
         imgurl: '/imgs/category01.svg',
@@ -42,6 +42,7 @@ function Home() {
     }
   ]
 
+  // 페이지 진입 시 최상단으로 스크롤 이동
   useEffect(()=>{
     window.scrollTo(0,0);
   },[])
@@ -50,17 +51,19 @@ function Home() {
   useEffect(()=>{
     axios.get(`${process.env.REACT_APP_APIURL}/api/p_list.php`)
     .then(res=>{
+      // 가장 최근에 등록된 데이터 8개 slice
       const newItem01 = res.data.slice(-4);
       const newItem02 = res.data.slice(-8, -4);
       setNewSlideItem([...newItem01, ...newItem02]);
 
-      setAllItem(res.data)
+      setAllItem(res.data);
     })
   },[])
 
-  // 모든 카테고리 가져와 홈에 표시되는 데이터의 카테고리 id값과 일치하는 카테고리의 name 가져오기
+  // 카테고리 정보 가져오기
   useEffect(()=>{
-    if (mainSlideItem === null) return;
+    // 데이터가 없으면 return
+    if (!mainSlideItem || !newSlideItem) return;
 
     axios.get(`${process.env.REACT_APP_APIURL}/api/category.php`)
     .then(res => {
@@ -82,19 +85,20 @@ function Home() {
   // 메인슬라이드 로컬스토리지 저장, 하루시간 설정 후 삭제되게 함
   useEffect(()=>{
     if (allItem && allItem.length > 0) {
-      const saveItem = localStorage.getItem('ripo-main'); //-> 문자열(쿠키는 원래 문자열만 저장 가능)
-      const now = new Date().getTime(); //현재 시간
-      const oneDay = 24 * 60 * 60 * 1000; //24시간=86400000ms
+      const saveItem = localStorage.getItem('ripo-main'); // 로컬 스토리지 데이터 가져오기
+      const now = new Date().getTime(); // 현재 시간
+      const oneDay = 24 * 60 * 60 * 1000; // 24시간을 초[ms]단위로
       
+      // 로컬스토리지에 저장된 아이템이 있을 경우
       if (saveItem) {
         try {
-          const parsedItem = JSON.parse(saveItem); //저장된 값이 있으면 문자열을 객체로 변경
+          const parsedItem = JSON.parse(saveItem); // 저장된 값이 있으면 문자열을 객체로 변경
           const { main, createdAt } = parsedItem; // createdAt 저장 시간이 지났는지 확인하는 용
           
           const isValidTime = createdAt && now - createdAt < oneDay; // 저장시간이 24시간 이내인지 확인 (현재시간-저장시간)
           
           if (isValidTime) {
-            // ⏳ 아직 하루 안 지났음 → 유효
+            // 아직 하루 안 지났음 → 유효
             setMainSlideItem(main); // 랜덤으로 하나 뽑아서 저장
             return;
           } else {
@@ -106,19 +110,21 @@ function Home() {
           localStorage.removeItem('ripo-main');
         }
       }
-      // 여기로 오면 유효한 로컬스토리지 없고 새로 랜덤 생성
-        const copyHomeData = [...allItem].sort(() => Math.random() - 0.5); // 배열을 랜덤하게 섞기 위해 sort함수에 넣어서 사용, 0-1사이 값을 주는데 -0.5를 하면 음수(앞으로) 양수(뒤로)값을 가지게 되어 순서가 바뀐다
-        const sliceHome = copyHomeData.slice(0, 4);
-        setMainSlideItem(sliceHome); // 랜덤으로 고른걸 메인슬라이드 이미지로 선택
-        const createdAt = new Date().getTime(); //현재 시각ms
-        localStorage.setItem('ripo-main', JSON.stringify({main: sliceHome, createdAt})); // sliceFood, mainFoodPick은 배열이니까 쿠키에 직접 저장이 되지 않아 문자열로 변경하여 저장
+      // 유효한 로컬스토리지 데이터 없을 경우 새로 랜덤 생성
+      const copyHomeData = [...allItem].sort(() => Math.random() - 0.5); // 배열을 랜덤하게 섞기 위해 sort함수에 넣어서 사용, 0-1사이 값을 주는데 -0.5를 하면 음수(앞으로) 양수(뒤로)값을 가지게 되어 순서가 바뀐다
+      const sliceHome = copyHomeData.slice(0, 4);
+      setMainSlideItem(sliceHome); // 랜덤으로 4개 slice한 아이템들을 메인슬라이드 이미지로 선택
+      const createdAt = new Date().getTime(); // 현재 시각 [ms]
+      localStorage.setItem('ripo-main', JSON.stringify({main: sliceHome, createdAt})); // 로컬스토리지에 아이템 데이터와 현재 시각 저장
     }
   }, [allItem]);
 
+  // 콘솔 로그 꾸미기
   useEffect(()=>{
     (function () {
       'use strict';
     
+      // 스타일
       const pastel = {
         purple: 'color:#BB9EE5;font-size:13px;font-weight:bold;',
         lightPurple: 'color:#C9B6E4;font-size:13px;',
@@ -128,7 +134,7 @@ function Home() {
         tag: 'color:#C9B6E4;font-size:12px;font-style:italic;',
       };
 
-      const date = new Date().toLocaleDateString();
+      const date = new Date().toLocaleDateString();   // 현재 날짜
     
       if (typeof console === 'object' && console.log) {
         console.clear(); // 깔끔하게 시작
@@ -150,6 +156,7 @@ function Home() {
     })();
   },[])
 
+  // 로딩 처리
   useEffect(()=>{
     if(mainSlideItem !== null){
       const timer = setTimeout(()=>{
@@ -167,6 +174,7 @@ function Home() {
   
   return (
     <div className='home'>
+      {/* 메인 슬라이드 */}
       <Swiper className='mainSlide'
         modules={[Autoplay, Pagination]}
         slidesPerView={'auto'}
@@ -189,6 +197,7 @@ function Home() {
         }
       </Swiper>
 
+      {/* 소카테고리 바로가기 메뉴 */}
       <Swiper className='categorySlide'
         slidesPerView={'auto'}
         spaceBetween={16}>
@@ -201,6 +210,7 @@ function Home() {
         }
       </Swiper>
 
+      {/* 신상품 슬라이드 */}
       <div className='home-item-box'>
         <div className='home-item-box-title'>
           <p><img src="/imgs/new.svg" alt="newIcon" /></p>
@@ -209,6 +219,7 @@ function Home() {
         <CardList data={newSlideItem} type={newCtgrName} rows={2} slidesPerView={2.6}/>
       </div>
 
+      {/* 푸터 */}
       <div className='footer'>
         (주)Ripo <br/>
         대표이사 : 차민규 / 서울시 강남구 테헤란로 000 <br/>

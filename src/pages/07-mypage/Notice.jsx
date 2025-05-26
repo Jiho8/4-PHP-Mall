@@ -3,8 +3,9 @@ import Accordion from '../../component/_common/Accordion';
 import '../../styles/07-mypage/notice.scss';
 
 function Notice() {
-  const [openIndex, setOpenIndex] = useState(null);
+  const [openIndex, setOpenIndex] = useState(null);     // 토글된 인덱스 관리
   
+  // 데이터 (type, title, 내용)
   const noticeData = [
     {
       noticeType: '[이벤트안내]',

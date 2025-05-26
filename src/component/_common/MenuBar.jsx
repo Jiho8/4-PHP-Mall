@@ -13,6 +13,7 @@ import CtgrIconPurple from '../icons/CtgrIconPurple';
 import CartIconPurple from '../icons/CartIconPurple';
 import MyIconPurple from '../icons/MyIconPurple';
 
+// 하단 메뉴 바
 function MenuBar() {
   const location = useLocation();
 
@@ -20,9 +21,8 @@ function MenuBar() {
   const hiddenPaths = ["/splash", "/pay", "/pay/done", "/signup"];
   const pathSegments = location.pathname.split('/');
   // ['', 'product', 'type', 'id'] → 길이 4
-  const isProductDetail = pathSegments[1] === 'product' && pathSegments.length === 4;
-  const hideMenu = hiddenPaths.includes(location.pathname) || isProductDetail
-
+  const isProductDetail = pathSegments[1] === 'product' && pathSegments.length === 4;   // 상품 상세 페이지
+  const hideMenu = hiddenPaths.includes(location.pathname) || isProductDetail           // 메뉴 숨길 페이지 여부
 
   if (hideMenu) return null; // 해당 경로가 true일 때 렌더링 X
 
@@ -44,33 +44,35 @@ function MenuBar() {
 
   return (
     <>
-    <GlobalStyles
-      // 스타일 처리
-      styles={{
-        '.MuiBottomNavigation-root': {
-          height: '68px !important',
-        },
-        '.MuiBottomNavigationAction-root': {
-          padding: '0 !important',
-          minWidth: '50px !important',
-          alignItems: 'center'
-        },
-        '.MuiBottomNavigationAction-root.Mui-selected': {
-          color: '#9257E9 !important',
-          padding: '0 !important',
-          minWidth: '50px !important',
-        },
-        '.MuiBottomNavigationAction-label': {
-          fontFamily: 'S-CoreDream-4Regular !important',
-          color: 'rgba(0,0,0,0.3)',
-          fontSize: '0.7rem !important'
-        },
-        '.MuiBottomNavigationAction-label.Mui-selected': {
-          color: '#9257E9',
-          fontSize: '0.7rem !important'
-        },
-      }}
-    />
+      <GlobalStyles
+        // 스타일 처리
+        styles={{
+          '.MuiBottomNavigation-root': {
+            height: '68px !important',    // 메뉴 바 높이 지정
+          },
+          '.MuiBottomNavigationAction-root': {
+            padding: '0 !important',
+            minWidth: '50px !important',
+            alignItems: 'center'
+          },
+          '.MuiBottomNavigationAction-root.Mui-selected': {
+            color: '#9257E9 !important',  // 선택된 메뉴 폰트 컬러 설정
+            padding: '0 !important',
+            minWidth: '50px !important',
+          },
+          '.MuiBottomNavigationAction-label': {
+            // 기본 메뉴 폰트 및 컬러 설정
+            fontFamily: 'S-CoreDream-4Regular !important',
+            color: 'rgba(0,0,0,0.3)',
+            fontSize: '0.7rem !important'
+          },
+          '.MuiBottomNavigationAction-label.Mui-selected': {
+            // 선택된 메뉴 폰트 사이즈 및 컬러 설정
+            color: '#9257E9',
+            fontSize: '0.7rem !important'
+          },
+        }}
+      />
       <BottomNavigation
         sx={{ 
           width: '100%', maxWidth: 480,
@@ -80,14 +82,15 @@ function MenuBar() {
           zIndex: 9999
         }}
         value={navValue}
-        showLabels
+        showLabels   // 메뉴명 항상 보기 
       >
         <BottomNavigationAction
-          label="홈"
-          value="/"
+          label="홈"  // 메뉴명
+          value="/"   // 메뉴 식별값
+          // 경로에 따른 선택된 아이콘 컬러 변경
           icon={ location.pathname === '/' ? <HomeIconPurple/> : <HomeIconGray/> }
-          component={NavLink}
-          to="/"
+          component={NavLink}  // 경로 이동 방식
+          to="/"               // 경로
         />
         <BottomNavigationAction
           label="검색"
