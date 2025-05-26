@@ -202,22 +202,22 @@ https://ripo-tau.vercel.app
 - [홈](https://ripo-tau.vercel.app/)
 - [검색](https://ripo-tau.vercel.app/search)
 - [카테고리](https://ripo-tau.vercel.app/category)
-- [상품 리스트 페이지](/product/[type]) *(type 필수. 홈이나 카테고리 페이지를 통해 접근 가능.)*
-- [상품 디테일 페이지](/product/[type]/[id]) *(type, id 필수)*
+- [상품 리스트 페이지](https://ripo-tau.vercel.app/product/[type]) *(type 필수. 홈이나 카테고리 페이지를 통해 접근 가능.)*
+- [상품 디테일 페이지](https://ripo-tau.vercel.app/product/[type]/[id]) *(type, id 필수)*
 
 ## 🧩 공통 컴포넌트
 
-1. Card (CardItem.jsx, CardList.jsx)
+1. **Card (CardItem.jsx, CardList.jsx)**
    - 상품 정보를 카드 형태로 보여주는 컴포넌트들
    - CardItem: 개별 상품 카드
    - CardList: 카드 아이템 리스트 렌더링
 
-2. Layout (MenuBar.jsx, Header.jsx)
+2. **Layout (MenuBar.jsx, Header.jsx)**
    - 앱 전반에 걸쳐 고정 사용되는 레이아웃 컴포넌트
    - MenuBar: 하단 고정 메뉴 바
    - Header: 상단 로고 및 버튼 포함 헤더
      
-3. Accordion (Accordion.jsx)
+3. **Accordion (Accordion.jsx)**
    - FAQ, 공지사항 등에 쓰이는 아코디언 UI 컴포넌트
 
 ## 💥 이슈 및 해결
