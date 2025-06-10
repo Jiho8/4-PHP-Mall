@@ -1,4 +1,4 @@
-<!-- ![Image](https://github.com/user-attachments/assets/21d84399-3377-479d-a22f-bcc3f3af0083)-->
+[semi프로젝트_B팀_01기획,화면설계.pdf](https://github.com/user-attachments/files/20674805/semi._B._01.pdf)<!-- ![Image](https://github.com/user-attachments/assets/21d84399-3377-479d-a22f-bcc3f3af0083)-->
 <!-- ![Image](https://github.com/user-attachments/assets/398f9b96-c2ab-4967-ac5f-819f9c52668f)-->
 <!-- ![Image](https://github.com/user-attachments/assets/a467f2b0-2d2c-45fc-b56c-b3a2bd830343)-->
 ![Image](https://github.com/user-attachments/assets/91c27f13-dec4-40b2-8f82-425733d1caf3)
@@ -174,6 +174,13 @@ https://ripo-tau.vercel.app
 | **Vercel** | **서버리스 플랫폼** |![vercel](https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white)|
 | **Figma** | **디자인 & UI/UX**|![Figma](https://img.shields.io/badge/Figma-F24E1E?style=flat-square&logo=Figma&logoColor=white) |
 
+## 📚 참고 URL
+- 기획 및 화면 설계 :
+[Ripo 기획서](https://github.com/user-attachments/files/20674811/semi._B._01.pdf)
+- 발표 자료 : 
+[Ripo Canva](https://www.canva.com/design/DAGoOq0Z7nU/etYhlLd8aQjNPVqUMuKzng/view?utm_content=DAGoOq0Z7nU&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h40fc2d6421)
+- 프로젝트 완료 보고서
+[Ripo Final report](https://github.com/user-attachments/files/20674930/semi._B._.pdf)
 
 <hr>
 
