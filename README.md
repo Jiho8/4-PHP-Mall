@@ -62,28 +62,37 @@ https://ripo-tau.vercel.app
 ## 💡 기능 구현 상세
 
 ### 1. 회원가입 및 로그인
-* 기본 정보 입력을 통한 회원가입 기능
-* 로그인 후 마이페이지, 장바구니 등 개인화 기능 이용 가능
+* **React Hook Form**을 활용하여 사용자 기본 정보 입력 및 유효성 검사를 포함한 회원가입 기능
+* **PHP**를 통한 사용자 인증 로직 구축, 로그인 성공 시 **Axios**를 통해 받아온 정보를 기반으로 마이페이지, 장바구니 등 개인화된 서비스 이용 가능
+* 사용자 정보는 **MySQL 데이터베이스**에 안전하게 저장 및 관리
 
 ### 2. 검색
-* 키워드 기반 상품 검색 기능
-* 검색 결과 페이지에서 상품 리스트 확인 가능
-* 관련 키워드 기반 추천 키워드 기능으로 쉽게 검색 가능
+* 키워드 기반 상품 검색 기능을 구현하여 사용자가 원하는 상품을 빠르게 찾을 수 있도록 지원
+* 버튼 클릭 시 **Axios**를 통해 **PHP 백엔드**로부터 검색 결과를 가져와 상품 리스트 렌더링
+* 관리자가 지정한 추천 키워드 기능으로 쉽게 검색 가능
+* 로컬 스토리지에 저장된 최근 본 상품 데이터를 이용하여 편리함 향상
 
-### 3. 상품 정보
-* 카테고리별로 상품을 구분하여 리스트 형태로 출력
+### 3. 상품 정보 제공 및 카테고리 관리
+* **React Router Dom**을 활용하여 SPA(Single Page Application) 형태로 카테고리별 상품 리스트 및 상세페이지 구현
 * 각 상품 클릭 시 상세페이지에서 상품 정보 확인 가능
-* 서버에서 연동된 상품 데이터를 기반으로 실시간 정보 반영
+* **Axios와 백엔드(PHP) 연동**을 통해 **MySQL 데이터베이스**에서 최신 상품 정보를 실시간으로 반영
 
-### 4. 장바구니
-* 원하는 상품을 장바구니에 담아두고 한 번에 결제 가능
-* 선택한 상품만 결제할 수 있도록 체크박스 기능 제공
-* 선택 삭제 및 개별 삭제 기능 지원
-* 총 주문 금액 자동 계산
+### 3-1. 상품 상세 페이지
+* 선택 상품의 상세 정보를 제공하며, 장바구니 추가 및 구매 기능을 이용 가능
+* 상품 정보, 수량 조절 UI, 장바구니/구매 버튼을 포함한 하단 구매 바는 클릭 시 확장
+* `React.memo`를 적용해 상세 설명 탭의 렌더링을 최적화했으며, 로딩 및 예외 처리로 사용자 경험 개선
+* 페이지 진입 시 해당 상품 정보를 **localStorage에 저장**하여 '최근 본 상품' 기능 구현
+
+### 4. 장바구니 기능
+* 사용자가 원하는 상품을 장바구니에 담아두고 한 번에 결제 가능
+* **Axios**를 통해 백엔드로부터 장바구니 목록을 불러오고, 이 데이터는 **sessionStorage 기반의 사용자 ID**를 통해 관리
+* 불러온 장바구니 목록은 **localStorage**에도 저장하여 페이지 새로고침 시에도 상태가 유지되며, 상품 추가/삭제 시 바로 반영
+* **MySQL**에서는 POST 요청으로 새 상품을 추가하고, PUT 요청으로 수량 등 기존 상품 정보를 업데이트하며, DELETE 요청으로 상품을 삭제하는 CRUD 로직을 처리
 
 ### 5. 마이페이지
-* 주문 내역 확인 기능
-* 사용자들이 자주 찾는 질문 정리 후 FAQ 탭 구성
+* 주문 내역 확인, FAQ 등 다양한 마이페이지 기능을 구현
+* **Axios**를 통해 **PHP**에서 사용자별 주문 내역을 안전하게 조회하고 표시
+* **session Storage**에 저장된 **사용자 ID**를 기반으로 개인화된 서비스 제공
 
 ## 🗂️ 폴더 구조
 
@@ -91,8 +100,8 @@ https://ripo-tau.vercel.app
 📂Ripo-Project
 ┣ 📂ripo                      # 리포 ( Front-End_React 프로젝트 )
 ┃ ┣ 📂public
-┃ ┃ ┣ 📂imgs
-┃ ┃ ┃ ┗ 📂_icons
+┃ ┃ ┣ 📂imgs                  # 로고, 아이콘 등 정적 이미지 폴더
+┃ ┃ ┃ ┗ 📂_icons              # 아이콘 이미지 폴더
 ┃ ┣ 📂src
 ┃ ┃ ┣ 📂component             # 컴포넌트 폴더
 ┃ ┃ ┃ ┣ 📂_common             # 공통 컴포넌트 폴더
@@ -103,7 +112,7 @@ https://ripo-tau.vercel.app
 ┃ ┃ ┃ ┣ 📂04-product          # 상품 컴포넌트 폴더
 ┃ ┃ ┃ ┣ 📂05-cart             # 장바구니 컴포넌트 폴더
 ┃ ┃ ┃ ┣ 📂06-pay              # 결제 컴포넌트 폴더
-┃ ┃ ┃ ┗ 📂icons
+┃ ┃ ┃ ┗ 📂icons               # 아이콘 컴포넌트 폴더
 ┃ ┃ ┣ 📂pages                 # 각 페이지 컴포넌트 폴더
 ┃ ┃ ┃ ┣ 📂00-login
 ┃ ┃ ┃ ┣ 📂01-home
@@ -140,7 +149,7 @@ https://ripo-tau.vercel.app
 | 사용기술 | 설명 |Badge |
 | :---:| :---: | :---: |
 | **React** | **SPA기반 프레임워크** |![react](https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=white)|
-|**React Router Dom** | **페이지 라우팅 관리** |![reactrouter](https://img.shields.io/badge/ReactRouter-CA4245?style=flat-square&logo=reactrouter&logoColor=white)|
+| **React Router Dom** | **페이지 라우팅 관리** |![reactrouter](https://img.shields.io/badge/ReactRouter-CA4245?style=flat-square&logo=reactrouter&logoColor=white)|
 | **React Hook Form** | **폼 상태 및 데이터 관리** |![reacthookform](https://img.shields.io/badge/ReactHookForm-F24E1E?style=flat-square&logo=reacthookform&logoColor=white)|
 | **Axios** | **클라이언트에서 서버로 API 요청 처리** |![axios](https://img.shields.io/badge/Axios-5A29E4?style=flat-square&logo=axios&logoColor=white)|
 
@@ -151,27 +160,29 @@ https://ripo-tau.vercel.app
 | **MUI** | **UI 프레임워크** |![mui](https://img.shields.io/badge/MUI-007FFF?style=flat-square&logo=mui&logoColor=white) |
 | **Swiper** | **슬라이더** |![Swiper](https://img.shields.io/badge/Swiper-6332F6?style=flat-square&logo=axios&logoColor=white)|
 | **react-swipeable** | **스와이프 제스처** |![npm](https://img.shields.io/badge/react--swipeable-00e6a4?style=flat-square&logo=npm&logoColor=white)|
-| **motion** | **애니메이션** |![motion](https://img.shields.io/badge/motion-fff312?style=flat-square&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2aWV3Qm94PSIwIDAgMjQgOSI+CiAgPHBhdGggZD0iTSA5LjA2MiAwIEwgNC4zMiA4Ljk5MiBMIDAgOC45OTIgTCAzLjcwMyAxLjk3MSBDIDQuMjc3IDAuODgyIDUuNzA5IDAgNi45MDIgMCBaIE0gMTkuNjU2IDIuMjQ4IEMgMTkuNjU2IDEuMDA2IDIwLjYyMyAwIDIxLjgxNiAwIEMgMjMuMDA5IDAgMjMuOTc2IDEuMDA2IDIzLjk3NiAyLjI0OCBDIDIzLjk3NiAzLjQ5IDIzLjAwOSA0LjQ5NiAyMS44MTYgNC40OTYgQyAyMC42MjMgNC40OTYgMTkuNjU2IDMuNDkgMTkuNjU2IDIuMjQ4IFogTSA5Ljg3MiAwIEwgMTQuMTkyIDAgTCA5LjQ1IDguOTkyIEwgNS4xMyA4Ljk5MiBaIE0gMTQuOTc0IDAgTCAxOS4yOTQgMCBMIDE1LjU5MiA3LjAyMSBDIDE1LjAxOCA4LjExIDEzLjU4NSA4Ljk5MiAxMi4zOTIgOC45OTIgTCAxMC4yMzIgOC45OTIgWiIgZmlsbD0icmdiKDAsIDAsIDApIj48L3BhdGg+Cjwvc3ZnPgo=&logoColor=white)|
-| **Sass** | **스타일링**|![Sass](https://img.shields.io/badge/Sass-CC6699?style=flat-square&logo=Sass&logoColor=white)|
+| **Framer Motion** | **애니메이션** |![motion](https://img.shields.io/badge/motion-fff312?style=flat-square&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2aWV3Qm94PSIwIDAgMjQgOSI+CiAgPHBhdGggZD0iTSA5LjA2MiAwIEwgNC4zMiA4Ljk5MiBMIDAgOC45OTIgTCAzLjcwMyAxLjk3MSBDIDQuMjc3IDAuODgyIDUuNzA5IDAgNi45MDIgMCBaIE0gMTkuNjU2IDIuMjQ4IEMgMTkuNjU2IDEuMDA2IDIwLjYyMyAwIDIxLjgxNiAwIEMgMjMuMDA5IDAgMjMuOTc2IDEuMDA2IDIzLjk3NiAyLjI0OCBDIDIzLjk3NiAzLjQ5IDIzLjAwOSA0LjQ5NiAyMS44MTYgNC40OTYgQyAyMC42MjMgNC40OTYgMTkuNjU2IDMuNDkgMTkuNjU2IDIuMjQ4IFogTSA5Ljg3MiAwIEwgMTQuMTkyIDAgTCA5LjQ1IDguOTkyIEwgNS4xMyA4Ljk5MiBaIE0gMTQuOTc0IDAgTCAxOS4yOTQgMCBMIDE1LjU5MiA3LjAyMSBDIDE1LjAxOCA4LjExIDEzLjU4NSA4Ljk5MiAxMi4zOTIgOC45OTIgTCAxMC4yMzIgOC45OTIgWiIgZmlsbD0icmdiKDAsIDAsIDApIj48L3BhdGg+Cjwvc3ZnPgo=&logoColor=white)|
+| **Sass** | **스타일링** |![Sass](https://img.shields.io/badge/Sass-CC6699?style=flat-square&logo=Sass&logoColor=white)|
 | **sweetalert2** | **커스텀 팝업 알림 UI** |![sweetalert2](https://img.shields.io/badge/sweetalert2-F27474?style=flat-square&logo=datefns&logoColor=white)|
 
 ### 3. Back-End
 
 | 사용기술 | 설명 | Badge |
 | :---:| :---: | :---: |
-| **Node.js** | **JavaScript 런타임 환경** |![nodedotjs](https://img.shields.io/badge/Node.js-5FA04E?style=flat-square&logo=nodedotjs&logoColor=white)|
+| **Node.js** | **서버 사이드 JavaScript 런타임 환경** |![nodedotjs](https://img.shields.io/badge/Node.js-5FA04E?style=flat-square&logo=nodedotjs&logoColor=white)|
 | **PHP** | **회원 및 상품 관리, 관리자 페이지 구현 등 서버 측 로직 처리** |![PHP](https://img.shields.io/badge/PHP-8892BE?style=flat-square&logo=npm&logoColor=white)|
 | **MySQL** | **데이터베이스 관리**  |![MySQL](https://img.shields.io/badge/MySQL-00758F?style=flat-square&logo=JSON&logoColor=white)|
-| **XAMPP** | **Apache, MySQL, PHP를 통합 제공하는 로컬 서버 개발 도구** |![XAMPP](https://img.shields.io/badge/XAMPP-FB7A24?style=flat-square&logo=nodemon&logoColor=white)|
 | **Axios** | **서버에서 API 요청 처리** |![axios](https://img.shields.io/badge/Axios-5A29E4?style=flat-square&logo=axios&logoColor=white)|
 
 ### 4. 개발 도구
 
 |사용기술 | 설명 | Badge | 
 | :---:| :---: | :---: |
+| **XAMPP** | **Apache, MySQL, PHP를 통합 제공하는 로컬 서버 개발 도구** |![XAMPP](https://img.shields.io/badge/XAMPP-FB7A24?style=flat-square&logo=nodemon&logoColor=white)|
+| **Dothome** | **웹 호스팅 서비스** |![Dothome](https://img.shields.io/badge/Dothome-24ABE3?style=flat-square&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHZpZXdCb3g9IjAgMCAzNiAzNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE1LjYgMC44ODc5NzhDOS4wNDggMS44OTU5OCAzLjY5NiA2LjI4Nzk4IDEuNjU2IDEyLjM2QzAuODE1OTk4IDE0LjgwOCAwLjQzMTk5OCAxNy43NiAwLjcxOTk5OCAxOS43NTJDMS4yMjQgMjMuMjA4IDIuMDQgMjUuNDE2IDMuNjQ4IDI3Ljc5MkM0LjI0OCAyOC42OCA0LjMyIDI4Ljg3MiA0LjAzMiAyOS4yMzJDMy4xMiAzMC4zODQgMi42ODggMzAuOTEyIDEuODcyIDMxLjgyNEMxLjM2OCAzMi4zNTIgMC45NTk5OTggMzIuODggMC45NTk5OTggMzIuOTc2QzAuOTU5OTk4IDMzLjA0OCAxLjM2OCAzMy4wNzIgMS44NzIgMzNDMi4zNTIgMzIuOTUyIDMuOTYgMzIuNzYgNS40IDMyLjYxNkM4LjA0IDMyLjMyOCA4LjA2NCAzMi4zMjggOSAzMi45MjhDMTEuODA4IDM0LjY1NiAxNC40NzIgMzUuMzc2IDE4LjEyIDM1LjM3NkMyMS4yNCAzNS4zNzYgMjMuMzUyIDM0Ljg5NiAyNS44IDMzLjY3MkMzMC40NTYgMzEuMzIgMzMuNTUyIDI3LjYgMzQuOTkyIDIyLjU2QzM1LjU0NCAyMC42MTYgMzUuNTIgMTUuMjQgMzQuOTQ0IDEzLjMyQzM0LjQ2NCAxMS43ODQgMzMuMzg0IDkuNTAzOTggMzIuNTY4IDguMzAzOThDMzEuMzIgNi41MDM5OCAyNy42MjQgMy4xMTk5OCAyNi45MDQgMy4xMTk5OEMyNi43MzYgMy4xMTk5OCAyNi42NCA2LjIxNTk4IDI2LjU5MiAxMS45MjhMMjYuNTIgMjAuNzZMMjUuODk2IDIyLjA4QzI0LjI0IDI1LjYzMiAxOS45NjggMjcuODY0IDE2LjI3MiAyNy4xMkMxMy4yIDI2LjUyIDEwLjg0OCAyNC43MiA5LjU1MiAyMS45MzZDOC44OCAyMC40OTYgOC44MzIgMjAuMjU2IDguOTI4IDE4LjA3MkM5IDE2LjA4IDkuMDk2IDE1LjUyOCA5LjY3MiAxNC40QzEwLjU4NCAxMi42MjQgMTIuMDQ4IDExLjEzNiAxMy44IDEwLjI3MkMxNS4wNDggOS42NDc5OCAxNS41NzYgOS41Mjc5OCAxNy43MTIgOS40MzE5OEwyMC4xNiA5LjI4Nzk4VjEyLjMzNlYxNS4zNkgxOC4zNkMxNi42MzIgMTUuMzYgMTYuNTM2IDE1LjM4NCAxNS43NDQgMTYuMkMxNS4yODggMTYuNjU2IDE0Ljg4IDE3LjMyOCAxNC44MzIgMTcuNjg4QzE0LjQ3MiAyMC42NCAxNy45MjggMjIuNDY0IDE5Ljg0OCAyMC4zMjhDMjAuODA4IDE5LjI3MiAyMC44OCAxOC41MDQgMjAuODggOS41OTk5OFYxLjAwNzk4TDIwLjM1MiAwLjg2Mzk3NkMxOS43NzYgMC43MTk5NzUgMTYuNjA4IDAuNzE5OTc1IDE1LjYgMC44ODc5NzhaIiBmaWxsPSIjRkZGRkZGIi8+Cjwvc3ZnPgo=)
+| **FileZilla** | **FTP 클라이언트 (서버로 파일 전송 및 관리)** |![FileZilla](https://img.shields.io/badge/FileZilla-BF0000?style=flat-square&logo=filezilla&logoColor=white)|
 | **Visual Studio Code (VS Code)** | **코드 편집기( 에디터 )** |![VSCode](https://img.shields.io/badge/VSCode-007ACC?style=flat-square&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTI0LjAwMyAyTDEyIDEzLjMwM0w0Ljg0IDhMMiAxMEw4Ljc3MiAxNkwyIDIyTDQuODQgMjRMMTIgMTguNzAyTDI0LjAwMyAzMEwzMCAyNy4wODdWNC45MTNMMjQuMDAzIDJaTTI0IDkuNDM0VjIyLjU2NkwxNS4yODkgMTZMMjQgOS40MzRaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K&logoColor=white) |
-|**GitHub** | **버전 관리** |![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white)| 
-| **Vercel** | **서버리스 플랫폼** |![vercel](https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white)|
+| **GitHub** | **버전 관리** |![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white)| 
+| **Vercel** | **서버리스 플랫폼** |![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white)|
 | **Figma** | **디자인 & UI/UX**|![Figma](https://img.shields.io/badge/Figma-F24E1E?style=flat-square&logo=Figma&logoColor=white) |
 
 ## 📚 참고 URL
@@ -180,7 +191,7 @@ https://ripo-tau.vercel.app
 - 발표 자료 : 
 [Ripo Canva](https://www.canva.com/design/DAGoOq0Z7nU/etYhlLd8aQjNPVqUMuKzng/view?utm_content=DAGoOq0Z7nU&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h40fc2d6421)
 - 프로젝트 완료 보고서
-[Ripo Final report](https://github.com/user-attachments/files/20674930/semi._B._.pdf)
+[Ripo Final Report](https://github.com/user-attachments/files/20674930/semi._B._.pdf)
 
 <hr>
 
@@ -189,21 +200,21 @@ https://ripo-tau.vercel.app
 ## 📑 요약
 
 ### 담당 컴포넌트
-- Home
-  - CategoryLink.jsx: 소카테고리 바로가기 메뉴
-  - HomeSlide.jsx: 랜덤으로 4개의 상품을 보여줄 메인 슬라이드 (하루 지나면 리셋)
-- Search
-  - SearchBar.jsx: 검색창
-  - SearchKeyword.jsx: 추천 키워드
-- Category
-  - CategorySub.jsx: 중카테고리
-- Product
-  - BottomBar.jsx: 상세 페이지에 사용되는 하단 구매 바
-  - BottomBarExpanded.jsx: 클릭을 통해 확장된 하단 구매 바 (수량 조절 및 버튼 포함)
-  - Detailcontent.jsx: 상세 내용 렌더링을 위한 별도 컴포넌트
-  - ProductSlide.jsx: 상품 썸네일 이미지 슬라이드
-  - SnackBar.jsx: 장바구니 알림을 위한 스낵바
-  - TabMenu.jsx: 상세 페이지에 사용되는 탭메뉴 (상세 내용 / 문의)
+1. Home
+  - `CategoryLink.jsx`: 소카테고리 바로가기 메뉴
+  - `HomeSlide.jsx`: 랜덤으로 4개의 상품을 보여줄 메인 슬라이드 (하루 지나면 리셋)
+2. Search
+  - `SearchBar.jsx`: 검색창
+  - `SearchKeyword.jsx`: 추천 키워드
+3. Category
+  - `CategorySub.jsx`: 중카테고리
+4. Product
+  - `BottomBar.jsx`: 상세 페이지에 사용되는 하단 구매 바
+  - `BottomBarExpanded.jsx`: 클릭을 통해 확장된 하단 구매 바 (수량 조절 및 버튼 포함)
+  - `Detailcontent.jsx`: 상세 내용 렌더링을 위한 별도 컴포넌트
+  - `ProductSlide.jsx`: 상품 썸네일 이미지 슬라이드
+  - `SnackBar.jsx`: 장바구니 알림을 위한 스낵바
+  - `TabMenu.jsx`: 상세 페이지에 사용되는 탭메뉴 (상세 내용 / 문의)
 
 ### 담당 페이지 목록
 - [홈](https://ripo-tau.vercel.app/)
@@ -214,17 +225,17 @@ https://ripo-tau.vercel.app
 
 ## 🧩 공통 컴포넌트
 
-- **Card (CardItem.jsx, CardList.jsx)**
+1. **Card (CardItem.jsx, CardList.jsx)**
    - 상품 정보를 카드 형태로 보여주는 컴포넌트들
    - CardItem: 개별 상품 카드
    - CardList: 카드 아이템 리스트 렌더링
 
-- **Layout (MenuBar.jsx, Header.jsx)**
+2. **Layout (MenuBar.jsx, Header.jsx)**
    - 앱 전반에 걸쳐 고정 사용되는 레이아웃 컴포넌트
    - MenuBar: 하단 고정 메뉴 바
    - Header: 상단 로고 및 버튼 포함 헤더
      
-- **Accordion (Accordion.jsx)**
+3. **Accordion (Accordion.jsx)**
    - FAQ, 공지사항 등에 쓰이는 아코디언 UI 컴포넌트
 
 ## 💥 이슈 및 해결
