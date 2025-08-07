@@ -101,9 +101,11 @@ function SearchPage() {
       </div>
 
       {/* 하단 이미지 */}
-      <div className='search-img'>
-        <img src="/imgs/search.svg" alt="search" />
-      </div>
+      {recents.length === 0 && (
+        <div className='search-img'>
+          <img src="/imgs/search.svg" alt="search" />
+        </div>
+      )}
     </div>
   )
 }

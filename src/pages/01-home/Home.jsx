@@ -158,13 +158,18 @@ function Home() {
 
   // 로딩 처리
   useEffect(()=>{
-    if(mainSlideItem !== null){
+    if(
+      mainSlideItem !== null &&
+      newSlideItem !== null &&
+      mainctgrName.length === mainSlideItem.length &&
+      newCtgrName.length === newSlideItem.length
+    ){
       const timer = setTimeout(()=>{
         setLoading(false);
-      },700);
-      return ()=>clearTimeout(timer);
+      }, 250);
+      return () => clearTimeout(timer);
     }
-  },[mainSlideItem]);
+  },[mainSlideItem, newSlideItem, mainctgrName, newCtgrName]);
 
   if(loading){
     return(
@@ -179,7 +184,7 @@ function Home() {
         modules={[Autoplay, Pagination]}
         slidesPerView={'auto'}
         autoplay={{
-          delay: 4000,
+          delay: 3000,
           disableOnInteraction: false,
         }}
         pagination={{ clickable: true }}

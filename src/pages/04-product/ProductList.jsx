@@ -24,56 +24,70 @@ function ProductList() {
       return;
     }
 
-    setLoading(true);  // 로딩 시작
-
     // 전체 카테고리 데이터 불러오기
-    axios.get(`${process.env.REACT_APP_APIURL}/api/category.php`)
-    .then(res => {
-      // 전체보기 별도 처리
-      if(type === 'all'){
-        setCtgrItem('전체보기');
-        return;
-      }
+    const fetchCategory = async () => {
+      try {
+        const res = await axios.get(`${process.env.REACT_APP_APIURL}/api/category.php`);
 
-      // 유효한 카테고리인지 확인 (type - name)
-      const matchedCategories = res.data.find(ctgr => String(ctgr.cat_name) === String(type));
-      if(!matchedCategories) {
-        // 해당 카테고리가 존재하지 않는 경우
+        if(type === 'all'){
+          // 전체보기 별도 처리
+          setCtgrItem('전체보기');
+        } else {
+          // 유효한 카테고리인지 확인 (type - name)
+          const matchedCategories = res.data.find(ctgr => String(ctgr.cat_name) === String(type));
+          if(!matchedCategories) {
+            // 해당 카테고리가 존재하지 않는 경우
+            setNotFound(true);
+          } else{
+            // 일치하는 카테고리 저장
+            setCtgrItem(matchedCategories);
+          }
+        }
+      } catch (err) {
+        console.error('카테고리 데이터 불러오기 실패', err);
         setNotFound(true);
-      } else{
-        // 일치하는 카테고리 저장
-        setCtgrItem(matchedCategories)
       }
-    })
-    .catch(e => console.error('카테고리 데이터 불러오기 실패', e))
-    .finally(()=>{
-      setLoading(false);
-    });
+    };
+
+    fetchCategory();
+  
   }, [type]);
 
   // 카테고리 정보가 세팅된 이후 해당 상품 리스트 불러오기
   useEffect(()=>{
     if (!ctgrItem) return;
 
-    axios.get(`${process.env.REACT_APP_APIURL}/api/p_list.php`)
-    .then(res => {
-      if(type === 'all'){
-        // 전체보기 별도 처리. 전체 상품 리스트 저장.
-        setListItem(res.data);
-      } else {
-        // 해당 카테고리 id와 일치하는 상품만 필터링
-        const matchedCategories = res.data.filter(product => String(product.cat_id) === String(ctgrItem.id));
-        setListItem(matchedCategories);
+    const fetchProducts = async () => {
+      try {
+        const res = await axios.get(`${process.env.REACT_APP_APIURL}/api/p_list.php`);
+
+        if(type === 'all'){
+          // 전체보기 별도 처리. 전체 상품 리스트 저장.
+          setListItem(res.data);
+        } else {
+          // 해당 카테고리 id와 일치하는 상품만 필터링
+          const matchedCategories = res.data.filter(product => String(product.cat_id) === String(ctgrItem.id));
+          setListItem(matchedCategories);
+        }
+      } catch (err) {
+        console.error('카테고리 데이터 불러오기 실패', err);
+      } finally {
+        // 카테고리, 상품 모두 불러온 후 로딩 해제
+        setTimeout(() => {
+          setLoading(false);
+        }, 200);
       }
-    })
-    .catch(e => console.error('카테고리 데이터 불러오기 실패', e));
+    };
+
+    fetchProducts();
+
 }, [ctgrItem, type]);
 
   // 아이템의 개수가 홀수일 경우 빈 박스를 추가해 두 줄로 균형 맞춤
   const items = [...listItem];
   if(items.length % 2 !== 0) items.push({ id: 'placeholder', isPlaceholder: true })
 
-  // 로딩 상태일 경우 로딩 컴포넌트 표시
+  // 로딩 처리
   if(loading){
     return(
       <DataLoading/>
@@ -87,12 +101,12 @@ function ProductList() {
         <>
           {/* 페이지 상단 타이틀 */}
           <h2 className='all-menu-title'>
-            {ctgrItem.cat_name ? ctgrItem.cat_name : ctgrItem}
+            {typeof ctgrItem === 'string' ? ctgrItem : ctgrItem?.cat_name}
           </h2>
           
           {/* 총 상품 개수 */}
           <p className='product-list-num'><span>{listItem.length}</span>개</p>
-
+  
           {/* 상품 리스트 */}
           <div className='product-list-item-box'>
             {items.map(product => 
