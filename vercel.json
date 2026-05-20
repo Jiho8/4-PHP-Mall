@@ -2,11 +2,11 @@
   "rewrites": [
     {
       "source": "/admin/api/:match*",
-      "destination": "http://jiho.dothome.co.kr/admin/api/:match*"
+      "destination": "https://jiho.dothome.co.kr/admin/api/:match*"
     },
     {
       "source": "/upload/:match*",
-      "destination": "http://jiho.dothome.co.kr/admin/product/upload/:match*"
+      "destination": "https://jiho.dothome.co.kr/admin/product/upload/:match*"
     }
   ]
 }
